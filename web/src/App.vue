@@ -1,12 +1,22 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+  <router-view>
+    <Dashboard />
+  </router-view>
 </template>
 
 <script>
+import Dashboard from './components/Dashboard/Dashboard'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Dashboard
+  },
+  data () {
+    return {
+      //
+    }
+  }
 }
 </script>
 

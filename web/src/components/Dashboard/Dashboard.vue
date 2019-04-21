@@ -1,6 +1,10 @@
 <template>
     <div id="dashboard-container">
-        <div id="dashboard-sidebar"></div>
+        <div id="dashboard-sidebar">
+            <div id="sidebar-title" />
+            <SidebarButton :active="true" :label="'Dashboard'" />
+            <SidebarButton :active="false" :label="'My Content'" />
+        </div>
         <div id="dashboard-body">
             <div id="dashboard-header">
 
@@ -10,7 +14,7 @@
             </div>
             <div class="dashboard-widget">
                 <div style="display: flex;flex-direction: row;">
-                    <div>
+                    <div style="display: flex;justify-content: center;flex-direction: column;">
                         <img style="height: 60px; width: 60px" src="../../assets/eth.png" />
                     </div>
                     <div>
@@ -25,6 +29,7 @@
 
 <script>
 import web3 from '../../api/web3'
+import SidebarButton from './SidebarButton'
 
 export default {
     mounted: async function() { 
@@ -34,6 +39,9 @@ export default {
         return {
             balance: 0
         }
+    },
+    components: {
+        SidebarButton
     }
 }
 </script>
@@ -49,6 +57,11 @@ export default {
         width: 250px;
         height: 100vh;
         box-shadow: 2px 2px 20px 11px #f0f2f3;
+    }
+    #sidebar-title {
+        height: 65px;
+        width: 100%;
+        border-bottom: 1px solid #e1e5eb;
     }
     #dashboard-body {
         display: flex;
@@ -72,7 +85,7 @@ export default {
         background-color: white;
         margin: 20px;
         border-radius: 4px;
-        box-shadow: 2px 2px 20px -11px #bfc0c1;
+        box-shadow: 0 2px 0 rgba(90,97,105,.11), 0 4px 8px rgba(90,97,105,.12), 0 10px 10px rgba(90,97,105,.06), 0 7px 70px rgba(90,97,105,.1);
         text-align: center;
         padding: 10px;
     }
