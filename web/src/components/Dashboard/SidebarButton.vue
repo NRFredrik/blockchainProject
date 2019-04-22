@@ -1,7 +1,7 @@
 <template>
     <div :class="{ active: active}" class="sidebar-button">
         <div class="sidebar-accent" />
-        <v-icon>md-dashboard</v-icon>
+        <v-icon>{{ icon }}</v-icon>
         <h4> {{ label }}</h4>
     </div>
 </template>
@@ -10,7 +10,8 @@
 export default {
     props: {
         label: String,
-        active: Boolean
+        active: Boolean,
+        icon: String
     }
 }
 </script>
@@ -28,25 +29,28 @@ export default {
         transition: all 0.2s ease-in-out;
     }
     .sidebar-button:hover .sidebar-accent {
-        background-color: #007bff;
+        background-color: #0082e4;
     }
-    .sidebar-button:hover h4 {
-        color: #007bff
+    .sidebar-button:hover h4, .sidebar-button:hover i {
+        color: #0082e4
     }
-    .active h4{
-        color: #007bff;
+    .active h4, .active i {
+        color: #0082e4;
     }
     .active .sidebar-accent {
-        background-color: #007bff;
+        background-color: #0082e4;
     }
     h4 {
         font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
         font-weight: 400;
         color: #3d5170;
-        margin: auto 20px;
+        margin: auto 20px auto 10px;
         transition: all 0.2s ease-in-out;
     }
     .active {
-        color: #007bff;
+        color: #0082e4;
+    }
+    i {
+        margin-left: 20px;
     }
 </style>

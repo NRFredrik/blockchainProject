@@ -6,8 +6,10 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 
+import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
+
 Vue.use(Vuetify, {
-  iconfont: 'md'
+  iconfont: 'mdi'
 })
 
 Vue.config.productionTip = false

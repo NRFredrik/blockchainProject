@@ -2,8 +2,8 @@
     <div id="dashboard-container">
         <div id="dashboard-sidebar">
             <div id="sidebar-title" />
-            <SidebarButton :active="true" :label="'Dashboard'" />
-            <SidebarButton :active="false" :label="'My Content'" />
+            <SidebarButton :icon="'mdi-view-dashboard'" :active="true" :label="'Dashboard'" />
+            <SidebarButton :icon="'mdi-content-copy'" :active="false" :label="'My Content'" />
         </div>
         <div id="dashboard-body">
             <div id="dashboard-header">
