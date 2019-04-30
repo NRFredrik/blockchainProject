@@ -1,8 +1,11 @@
 <template>
-    <div :class="{ active: active}" class="sidebar-button">
-        <div class="sidebar-accent" />
-        <v-icon>{{ icon }}</v-icon>
-        <h4> {{ label }}</h4>
+    <div>
+        <router-link :to="to">
+            <div class="sidebar-button" :class="{ active: active }">
+                <div class="sidebar-accent" />
+                <h4>{{ label }}</h4>
+            </div>
+        </router-link>
     </div>
 </template>
 
@@ -11,12 +14,13 @@ export default {
     props: {
         label: String,
         active: Boolean,
-        icon: String
+        icon: String,
+        to: String
     }
 }
 </script>
 
-<style scoped>
+<style>
     .sidebar-button {
         display: flex;
         height: 50px;
@@ -43,6 +47,7 @@ export default {
     h4 {
         font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
         font-weight: 400;
+        text-decoration: none !important;
         color: #3d5170;
         margin: auto 20px auto 10px;
         transition: all 0.2s ease-in-out;
