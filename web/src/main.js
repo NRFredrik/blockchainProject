@@ -20,7 +20,7 @@ Vue.config.productionTip = false
 const store = new Vuex.Store({
   state: {
     wallet: '',
-    balance: 0
+    balance: 0,
   },
   mutations: {
     setWallet(state,wallet) {state.wallet = wallet},

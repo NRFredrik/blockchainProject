@@ -7,7 +7,7 @@
         </div>
         <div id="dashboard-body">
             <div id="dashboard-header">
-              <input @change="updateWallet" id="wallet" :value="wallet" placeholder="Enter wallet address" />
+              <p id="wallet"><span>Wallet Address: </span>{{ wallet }}</p>
             </div>
             <div id="dashboard-subheader">
                 <h3>{{ this.activeTab }}</h3>
@@ -19,9 +19,15 @@
 
 <script>
 import SidebarButton from './components/SidebarButton'
+import web3 from './api/web3'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  mounted: async function() { 
+    const wallet = (await web3.eth.getAccounts())[0]
+    console.log('setting wallet: ', wallet)
+    this.$store.dispatch('setWallet', wallet)
+  },
   updated: function() { this.activeTab = this.$route.name },
   data: function() {
     return {
@@ -49,13 +55,15 @@ export default {
   h4 { text-decoration: none !important; } 
   #wallet {
     float: right;
-    border: 1px solid #ddd;
-    border-radius: 3px;
     margin: auto 0;
     padding: 10px;
     margin-top: 12px;
-    margin-right: 20px;
-    width: 360px;
+    margin-right: 10px;
+    font-weight: 600;
+  }
+  #wallet span {
+    font-style: italic;
+    font-weight: 400;
   }
   .full-width {
     width: auto !important;
