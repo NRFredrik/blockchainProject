@@ -28,7 +28,6 @@ import "https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/ownershi
 //deployer of contract is the owner
 contract RegisterItems is Ownable {
     
-    uint REGISTER_COST;
     
     struct itemStruct{
         string name;  
@@ -40,14 +39,7 @@ contract RegisterItems is Ownable {
         
         
     }
-    
-    constructor(uint256 _cost) public {
-        REGISTER_COST = _cost;
-        
-    }
-    
-    
-    
+
     //container for if user has many items
     struct metaItem{
         uint itemListSize;
@@ -104,7 +96,7 @@ contract RegisterItems is Ownable {
                 userExists[msg.sender] = true;
             }
             
-            require(msg.value == REGISTER_COST); //set the price for registering-- goes to contract
+            //require(msg.value == REGISTER_COST); //set the price for registering-- goes to contract
             return true;
         }
         else{
@@ -160,7 +152,7 @@ contract RegisterItems is Ownable {
         
     }
     
-    function compareStrings (string memory a, string memory b) public view returns (bool) {
+    function compareStrings (string memory a, string memory b) private view returns (bool) {
         return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))) );
 
     }
@@ -254,7 +246,7 @@ contract RegisterItems is Ownable {
         //remove from previous owner
         //problem not knowing indexes!!!
         storedItem[itemOwner].itemListSize--;
-        delete storedItem[itemOwner].itemList[uint(index)];
+        //delete storedItem[itemOwner].itemList[uint(index)];
         
     
         
