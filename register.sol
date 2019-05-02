@@ -28,7 +28,7 @@ import "https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/ownershi
 //deployer of contract is the owner
 contract RegisterItems is Ownable {
     
-    uint REGISTER_COST = 1 ether;
+    uint REGISTER_COST;
     
     struct itemStruct{
         string name;  
@@ -41,6 +41,10 @@ contract RegisterItems is Ownable {
         
     }
     
+    constructor(uint256 _cost) public {
+        REGISTER_COST = _cost;
+        
+    }
     
     
     
@@ -48,8 +52,7 @@ contract RegisterItems is Ownable {
     struct metaItem{
         uint itemListSize;
         mapping(uint => itemStruct) itemList;
-        
-        
+
         
     }
 
