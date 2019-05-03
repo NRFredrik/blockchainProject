@@ -110,6 +110,7 @@ contract RegisterItems is Ownable {
             //find  a way to output ALL items: name + hash should be enough
             
             
+            
         }
         
     }
@@ -270,9 +271,37 @@ contract RegisterItems is Ownable {
     function getItemNameFromHash(string memory _hash) public view returns(string memory){
         require(hashExists[_hash] == true);
         address owner = hashToOwner[_hash];
+        assert(userExists[owner] == true); //should never happen
+        
         uint index = getSpecificOwnedItemIndex(owner,_hash);
         
         return storedItem[owner].ownedItemList[index].name;
+        
+        
+        
+    }
+    
+    function getOwnedListSize (address _address) public view returns (uint){
+        require(userExists[_address] == true);
+        
+        return storedItem[_address].ownedListSize;
+        
+        
+    }
+
+    function getBoughtListSize (address _address) public view returns (uint){
+        require(userExists[_address] == true);
+        
+        return storedItem[_address].boughtListSize;
+   
+    }
+    
+    function getOwnedItemFromIndex(address _address, uint index) public view returns (string memory){
+        
+        return storedItem[_address].ownedItemList[index].name;
+        
+        
+        
         
         
         
