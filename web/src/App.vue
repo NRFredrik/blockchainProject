@@ -1,5 +1,5 @@
 <template>
-    <div id="dashboard-container">
+    <div v-if="wallet.length > 0" id="dashboard-container">
         <div id="dashboard-sidebar">
             <div id="sidebar-title" />
             <SidebarButton :to="'/Dashboard'" :icon="'mdi-view-dashboard'" :active="this.activeTab === 'Dashboard'" :label="'Dashboard'" />
@@ -8,9 +8,6 @@
         <div id="dashboard-body">
             <div id="dashboard-header">
               <p id="wallet"><span>Wallet Address: </span>{{ wallet }}</p>
-            </div>
-            <div id="dashboard-subheader">
-                <h3>{{ this.activeTab }}</h3>
             </div>
             <router-view></router-view>
         </div>
@@ -21,11 +18,12 @@
 import SidebarButton from './components/SidebarButton'
 import web3 from './api/web3'
 import { mapGetters, mapActions } from 'vuex'
+import abi from './api/abi'
+import axios from 'axios'
 
 export default {
   mounted: async function() { 
     const wallet = (await web3.eth.getAccounts())[0]
-    console.log('setting wallet: ', wallet)
     this.$store.dispatch('setWallet', wallet)
   },
   updated: function() { this.activeTab = this.$route.name },
@@ -52,7 +50,7 @@ export default {
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
     color: #3d5170;
   }
-  h4 { text-decoration: none !important; } 
+  h1, h2, h3, h4, h5, h6, p, a { text-decoration: none !important; margin: 0; } 
   #wallet {
     float: right;
     margin: auto 0;
