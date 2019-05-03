@@ -6,25 +6,6 @@ pragma solidity ^0.5.7;
 import "https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 
-// contract Item{
-    
-//     struct itemStruct{
-//         string name;  
-//         bytes32 hash;
-//         uint buyPrice;
-//         uint ownPrice;
-//         address item_owner;
-//         //address[] requests; //list of people who requested it
-        
-        
-//     }
-    
-    
-
-// }
-
-
-
 //deployer of contract is the owner
 contract RegisterItems is Ownable {
     
@@ -42,15 +23,16 @@ contract RegisterItems is Ownable {
 
     //container for if user has many items
     struct metaItem{
-        uint itemListSize;
-        mapping(uint => itemStruct) itemList;
+        uint boughtListSize;
+        uint ownedListSize;
+        mapping(uint => itemStruct) boughtItemList;
+        mapping(uint => itemStruct) ownedItemList;
 
-        
     }
 
     mapping(address => bool) userExists; //check if user exists
     mapping(string => bool) hashExists; //check if hash exists
-    mapping(string => address) hashToUser;
+    mapping(string => address) hashToOwner;
     mapping(string => itemStruct) hashToItem;
    
     mapping(address => metaItem) storedItem;//map user address to item (string test)
@@ -81,13 +63,13 @@ contract RegisterItems is Ownable {
             
             //Set mappings
             hashExists[_hash] = true;
-            hashToUser[_hash] = msg.sender;
+            hashToOwner[_hash] = msg.sender;
             hashToItem[_hash] = itemnew;
             
             //set users storedItem
-            uint index = storedItem[msg.sender].itemListSize; //index is the size of user's size of items (metalist)
-            storedItem[msg.sender].itemListSize++; //increase size
-            storedItem[msg.sender].itemList[index] = itemnew; //put item in user's list
+            uint index = storedItem[msg.sender].ownedListSize; //(0)index is the size of user's size of items (metalist)
+            storedItem[msg.sender].ownedListSize++; //increase size
+            storedItem[msg.sender].ownedItemList[index] = itemnew; //put item in user's list
            
             
             
@@ -116,14 +98,14 @@ contract RegisterItems is Ownable {
 //   }
     
     function findOwnerByItem(string memory _hash) public view returns (address _owner){
-        return hashToUser[_hash];
+        return hashToOwner[_hash];
  
     }
     //TODO
     //list all items from a user
-    function getItems(address _address)public view returns (bool) {  
+    function getOwnedItems(address _address)public view returns (bool) {  
         //number of items user has
-        uint numItems = storedItem[_address].itemListSize;
+        uint numItems = storedItem[_address].ownedListSize;
         for(uint i = 0; i < numItems; i++){
             //find  a way to output ALL items: name + hash should be enough
             
@@ -133,22 +115,19 @@ contract RegisterItems is Ownable {
     }
     
     //helper function : finds the specific index of an item in an address (private)
-    function getSpecificItemIndex(address _address, string memory _hash)private view returns (int index) {
+    function getSpecificOwnedItemIndex(address _address, string memory _hash)public view returns (uint index) {
+        require(hashExists[_hash] == true);
         
-         if(hashExists[_hash] == false){
-            return -1;
-        }
         //number of items user has
-        uint numItems = storedItem[_address].itemListSize;
+        uint numItems = storedItem[_address].ownedListSize;
         //find which index item lives in
         for(uint i = 0; i < numItems; i++){
-            if(compareStrings(storedItem[_address].itemList[i].hash, _hash)){
-                return int(i);
+            if(compareStrings(storedItem[_address].ownedItemList[i].hash, _hash)){
+                return uint(i);
             }
 
         }
-        //if item was not found
-        return -1;
+        
         
     }
     
@@ -188,10 +167,10 @@ contract RegisterItems is Ownable {
         require(hashExists[_hash] == true);
         
         //get owner of item
-        address itemOwner = hashToUser[_hash];
+        address itemOwner = hashToOwner[_hash];
         
         
-        int index = getSpecificItemIndex(itemOwner,_hash);
+        uint index = getSpecificOwnedItemIndex(itemOwner,_hash);
         uint price = checkBuyPrice(_hash);
         
         require(msg.value == price);
@@ -202,12 +181,12 @@ contract RegisterItems is Ownable {
         }
         //add item to other person
         //get the item
-        itemStruct memory itemnew = storedItem[itemOwner].itemList[uint(index)];
+        itemStruct memory itemnew = storedItem[itemOwner].ownedItemList[uint(index)];
     
         
-        uint buyerIndex = storedItem[msg.sender].itemListSize; //index is the size of user's size of items (metalist)
-        storedItem[msg.sender].itemListSize++; //increase size
-        storedItem[msg.sender].itemList[buyerIndex] = itemnew; //put item in user's list
+        uint buyerIndex = storedItem[msg.sender].boughtListSize; //index is the size of user's size of items (metalist)
+        storedItem[msg.sender].boughtListSize++; //increase size
+        storedItem[msg.sender].boughtItemList[buyerIndex] = itemnew; //put item in user's list
           
         //added item to user
     
@@ -219,10 +198,11 @@ contract RegisterItems is Ownable {
         require(hashExists[_hash] == true);
         
         //get owner of item
-        address itemOwner = hashToUser[_hash];
+        address itemOwner = hashToOwner[_hash];
         
         
-        int index = getSpecificItemIndex(itemOwner,_hash);
+        uint index = getSpecificOwnedItemIndex(itemOwner,_hash);
+    
         uint price = checkBuyPrice(_hash);
         
         require(msg.value == price);
@@ -233,20 +213,42 @@ contract RegisterItems is Ownable {
         }
         //add item to other person
         //get the item
-        itemStruct memory itemnew = storedItem[itemOwner].itemList[uint(index)];
+        itemStruct memory itemnew = storedItem[itemOwner].ownedItemList[uint(index)];
         
-
-        hashToUser[_hash] = msg.sender;
+        //add item to new user's Owned inventory
+        hashToOwner[_hash] = msg.sender;
         hashToItem[_hash] = itemnew;
         
-        uint buyerIndex = storedItem[msg.sender].itemListSize; //index is the size of user's size of items (metalist)
-        storedItem[msg.sender].itemListSize++; //increase size
-        storedItem[msg.sender].itemList[buyerIndex] = itemnew; //put item in user's list
+        uint buyerIndex = storedItem[msg.sender].ownedListSize; //index is the size of user's size of items (metalist)
+        storedItem[msg.sender].ownedListSize++; //increase size
+        storedItem[msg.sender].ownedItemList[buyerIndex] = itemnew; //put item in user's list
           
         //remove from previous owner
         //problem not knowing indexes!!!
-        storedItem[itemOwner].itemListSize--;
-        //delete storedItem[itemOwner].itemList[uint(index)];
+        
+        storedItem[itemOwner].ownedListSize--;
+        uint ownedSize = storedItem[itemOwner].ownedListSize;
+        
+        //if one is removed place last item at end
+        uint newSize = storedItem[itemOwner].ownedListSize;
+        if(newSize > 1 && index != ownedSize -1){ //if there's more than one item and the item removed wasn't the last item
+            //move the last item to the deleted spot
+            //delete prev owner index
+            //delete storedItem[itemOwner].ownedItemList[uint(index)]; 
+            itemnew = storedItem[itemOwner].ownedItemList[ownedSize];//(owned list already -1 so should be good index)get the last thing in the last index and put in old spot
+            storedItem[itemOwner].ownedItemList[uint(index)] = itemnew;
+            //delete last index
+            //delete storedItem[itemOwner].ownedItemList[uint(index)];
+            //shift last index to same spot
+           
+                
+            
+        }
+        else if(index  == newSize +1){
+           //delete storedItem[itemOwner].ownedItemList[uint(index)];
+            
+        }
+
         
     
         
@@ -262,6 +264,17 @@ contract RegisterItems is Ownable {
     
     function withdraw() public onlyOwner() {
         msg.sender.transfer(address(this).balance);
+        
+    }
+    
+    function getItemNameFromHash(string memory _hash) public view returns(string memory){
+        require(hashExists[_hash] == true);
+        address owner = hashToOwner[_hash];
+        uint index = getSpecificOwnedItemIndex(owner,_hash);
+        
+        return storedItem[owner].ownedItemList[index].name;
+        
+        
         
     }
     
