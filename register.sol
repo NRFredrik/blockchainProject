@@ -1,82 +1,14 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.5.7;
 
 //https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/ownership/Ownable.sol
 
 //allows the contract to be owned by the deployer
-contract Ownable {
-    address private _owner;
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
-<<<<<<< HEAD
-    /**
-     * @dev The Ownable constructor sets the original `owner` of the contract to the sender
-     * account.
-     */
-    constructor () internal {
-        _owner = msg.sender;
-        emit OwnershipTransferred(address(0), _owner);
-    }
-
-    /**
-     * @return the address of the owner.
-     */
-    function owner() public view returns (address) {
-        return _owner;
-    }
-
-    /**
-     * @dev Throws if called by any account other than the owner.
-     */
-    modifier onlyOwner() {
-        require(isOwner(), "Ownable: caller is not the owner");
-        _;
-    }
-
-    /**
-     * @return true if `msg.sender` is the owner of the contract.
-     */
-    function isOwner() public view returns (bool) {
-        return msg.sender == _owner;
-    }
-
-    /**
-     * @dev Allows the current owner to relinquish control of the contract.
-     * It will not be possible to call the functions with the `onlyOwner`
-     * modifier anymore.
-     * @notice Renouncing ownership will leave the contract without an owner,
-     * thereby removing any functionality that is only available to the owner.
-     */
-    function renounceOwnership() public onlyOwner {
-        emit OwnershipTransferred(_owner, address(0));
-        _owner = address(0);
-    }
-
-    /**
-     * @dev Allows the current owner to transfer control of the contract to a newOwner.
-     * @param newOwner The address to transfer ownership to.
-     */
-    function transferOwnership(address newOwner) public onlyOwner {
-        _transferOwnership(newOwner);
-    }
-
-    /**
-     * @dev Transfers control of the contract to a newOwner.
-     * @param newOwner The address to transfer ownership to.
-     */
-    function _transferOwnership(address newOwner) internal {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
-        emit OwnershipTransferred(_owner, newOwner);
-        _owner = newOwner;
-    }
-}
-
-contract Item {
-=======
 //deployer of contract is the owner
 contract RegisterItems is Ownable {
     
->>>>>>> 5ccc72158f487a82d4dec84a5a4be14030b91fc5
     
     struct itemStruct{
         string name;  
@@ -86,18 +18,9 @@ contract RegisterItems is Ownable {
         address item_owner;
         //address[] requests; //list of people who requested it
         
+        
     }
-<<<<<<< HEAD
-    
-}
 
-//deployer of contract is the owner
-contract RegisterItems is Ownable {
-    
-    
-=======
-
->>>>>>> 5ccc72158f487a82d4dec84a5a4be14030b91fc5
     //container for if user has many items
     struct metaItem{
         uint boughtListSize;
@@ -241,11 +164,7 @@ contract RegisterItems is Ownable {
     }
     
     
-<<<<<<< HEAD
-    /*function buyItem(bytes32 _hash) public payable{
-=======
     function buyItem(string memory _hash) public payable{
->>>>>>> 5ccc72158f487a82d4dec84a5a4be14030b91fc5
         require(hashExists[_hash] == true);
         
         //get owner of item
@@ -334,12 +253,8 @@ contract RegisterItems is Ownable {
         
     
         
-<<<<<<< HEAD
-    }*/
-=======
        
     }
->>>>>>> 5ccc72158f487a82d4dec84a5a4be14030b91fc5
     
     //only the contract owner sees the balance--
     //onylOwner() modifier comes from Owner.sol (import)
