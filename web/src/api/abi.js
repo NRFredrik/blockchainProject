@@ -156,6 +156,29 @@ const abi = [
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getOwnedItemFromIndex",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -244,13 +267,74 @@ const abi = [
 			{
 				"name": "_address",
 				"type": "address"
+			},
+			{
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getBoughtItemFromIndex",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "getOwnedListSize",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "getBoughtListSize",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
 			}
 		],
 		"name": "getOwnedItems",
 		"outputs": [
 			{
 				"name": "",
-				"type": "bool"
+				"type": "string"
 			}
 		],
 		"payable": false,
@@ -291,6 +375,36 @@ const abi = [
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "getBoughtItems",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"name": "_payment",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -323,6 +437,72 @@ const abi = [
 		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": false,
+				"name": "sender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "LogFundsReceived",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "size",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "words",
+				"type": "string"
+			}
+		],
+		"name": "test",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"name": "hash",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"name": "buyprice",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "ownprice",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "sender",
+				"type": "address"
+			}
+		],
+		"name": "getvar",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
 				"indexed": true,
 				"name": "previousOwner",
 				"type": "address"
@@ -338,6 +518,6 @@ const abi = [
 	}
 ]
 
-const address = "0xe81be62cd91226cc131d68e8440e963d14f942a3"
+const address = "0x739740f6e794a4cf31fd9c82f8bee8744d8a557d"
 
 export default new web3.eth.Contract(abi, address);

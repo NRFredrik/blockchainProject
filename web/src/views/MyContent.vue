@@ -82,7 +82,8 @@ export default {
                 filehash: this.filehash
             })
             let contract = await abi.methods.registerNewItem(this.filehash, this.filename, this.buyPrice, this.ownPrice).send({
-                from: this.wallet
+                from: this.wallet,
+                value: 1000
             })
         }
     }

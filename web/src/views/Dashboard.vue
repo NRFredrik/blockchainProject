@@ -27,7 +27,7 @@
                 <div style="display: flex;flex-direction: row;">
                     <div>
                         <h2 style="font-size: 36px;">Purchased</h2>
-                        <p style="font-size: 26px;">{{ ownedItems }}</p>
+                        <p style="font-size: 26px;">{{ purchasedItems.length }}</p>
                     </div>
                 </div>
             </div>
@@ -39,8 +39,8 @@
                     <p>{{ item.name }}</p>
                 </div>
                 <div class="buttons-container">
-                    <button @click="buyItem(item.hash)" class='image-button'>Purchase ({{item.buyPrice}}) wei </button>
-                    <button @click="ownItem(item.hash)" class='image-button'>Own ({{item.ownPrice}}) wei</button>
+                    <button @click="buyItem(item.hash, item.buyPrice)" class='image-button'>Purchase ({{item.buyPrice}}) wei </button>
+                    <button @click="ownItem(item.hash, item.ownPrice)" class='image-button'>Own ({{item.ownPrice}}) wei</button>
                 </div>
             </div>
         </div>
@@ -68,23 +68,29 @@ export default {
         }
         this.allItems = allItems
         this.$store.dispatch('loadAllItems', allItems)
+        const purchasedItems = (await abi.methods.getBoughtItems(this.wallet).call()).split(',').filter(item => item && item !== ' ')
+        this.$store.dispatch('setPurchasedItems', purchasedItems)
+        console.log('purchasedItems:', purchasedItems)
         console.log('all items:', allItems)
     },
     data: function() {
         return {}
     },
-    computed: mapGetters(['wallet', 'balance', 'contentCount', 'ownedItems', 'allItems']),
+    computed: mapGetters(['wallet', 'balance', 'contentCount', 'ownedItems', 'allItems', 'purchasedItems']),
     methods: {
-        async buyItem(hash) {
-            const self = this
-            console.log('biying item:', hash)
-            let res = await abi.methods.buyItem(hash).send({
-                from: self.wallet
+        async buyItem(hash, value) {
+            const self = this;
+            await abi.methods.buyItem(hash).send({
+                from: self.wallet,
+                value
             })
-            console.log(res)
         },
-        async ownItem(hash) {
-            console.log('own item:', hash)
+        async ownItem(hash, value) {
+            const self = this;
+            await abi.methods.ownItem(hash).send({
+                from: self.wallet,
+                value
+            })
         }
     }
 }

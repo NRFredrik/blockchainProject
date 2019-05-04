@@ -24,7 +24,8 @@ const store = new Vuex.Store({
     balance: 0,
     contentCount: 0,
     ownedItems: 0,
-    allItems: []
+    allItems: [],
+    purchasedItems: 0
   },
   mutations: {
     setWallet(state,wallet) {state.wallet = wallet},
@@ -35,6 +36,9 @@ const store = new Vuex.Store({
     reset(state) {
       state.ownedItems = 0
       state.allItems = []
+    },
+    setPurchsedItems(state, purchasedItems) { 
+      state.purchasedItems = purchasedItems
     }
   },
   actions: {
@@ -47,14 +51,16 @@ const store = new Vuex.Store({
       commit('incrementOwnedItems')
     },
     loadAllItems({state, commit}, allItems) { commit('loadAllItems', allItems)},
-    reset({commit}) {commit('reset')}
+    reset({commit}) {commit('reset')},
+    setPurchasedItems({state, commit}, purchasedItems) { commit('setPurchsedItems', purchasedItems) }
   },
   getters: {
     wallet(state) { return state.wallet },
     balance(state) { return state.balance },
     contentCount(state) { return state.contentCount },
     ownedItems(state) { return state.ownedItems },
-    allItems(state) { return state.allItems }
+    allItems(state) { return state.allItems },
+    purchasedItems(state) { return state.purchasedItems }
   }
 })
 
