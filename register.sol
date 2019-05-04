@@ -109,7 +109,7 @@ contract RegisterItems is Ownable {
         string memory space = ", ";
         for(uint i = 0; i < numItems; i++){
             //find  a way to output ALL items: name + hash should be enough
-            names = append(storedItem[_address].ownedItemList[i].name,space,names);
+            names = append(storedItem[_address].ownedItemList[i].hash,space,names);
             
             
             
@@ -124,7 +124,7 @@ contract RegisterItems is Ownable {
         string memory space = ", ";
         for(uint i = 0; i < numItems; i++){
             //find  a way to output ALL items: name + hash should be enough
-            names = append(storedItem[_address].boughtItemList[i].name,space,names);
+            names = append(storedItem[_address].boughtItemList[i].hash,space,names);
             
             
             
